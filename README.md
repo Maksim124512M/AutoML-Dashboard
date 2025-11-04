@@ -1,6 +1,6 @@
 # ML-Dashboard
 
-Interactive Machine Learning Dashboard built with **Streamlit**, **scikit-learn**, and **PyTorch**.  
+Interactive Machine Learning Dashboard built with **Streamlit** and **scikit-learn**.
 This project allows users to upload datasets, preprocess data, train multiple ML models, tune hyperparameters, visualize performance metrics, and export reports — all from an intuitive web interface.
 
 ## Features
