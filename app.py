@@ -20,14 +20,21 @@ if uploaded_file:
     # Train models button
     if st.button("Train Models"):
         # Train models and display results
-        with st.spinner("Training in progress..."):
-            df_results = train_model(df=df, target=target, task_type=task_type)
-        
-        st.subheader("Model Results:")
-        st.dataframe(df_results)
+        try:
+            with st.spinner("Training in progress..."):
+                df_results = train_model(df=df, target=target, task_type=task_type)
 
-        fig = plot_metrics(df_results)
-        st.pyplot(fig)
+            st.success('Training completed successfully!')
+        
+            st.subheader("Model Results:")
+            st.dataframe(df_results)
+
+            fig = plot_metrics(df_results, task_type)
+            st.pyplot(fig)
+        except ValueError as e:
+            st.warning(e)
+        except Exception as e:
+            st.error(f'Unexpected error: {e}')
 
 else:
     st.info("Please upload a CSV file to begin.")

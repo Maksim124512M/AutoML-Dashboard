@@ -14,7 +14,7 @@ def plot_metrics(df_results, task_type):
     plt.figure(figsize=(8, 5))  # Set figure size
 
     if task_type == "Classification":
-        plt.bar(df_results["model"], df_results["accuracy"], label="Accuracy")
+        plt.bar(df_results["model"], df_results["test_accuracy"], label="Accuracy")
         plt.bar(df_results["model"], df_results["f1"], alpha=0.6, label="F1 Score")
         plt.ylabel("Score")
     else:
