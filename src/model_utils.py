@@ -1,5 +1,9 @@
 import pandas as pd
 
+from xgboost import XGBClassifier, XGBRegressor
+from lightgbm import LGBMClassifier, LGBMRegressor
+from catboost import CatBoostClassifier, CatBoostRegressor
+
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.svm import SVC, SVR
@@ -30,12 +34,18 @@ def train_model(df, target, task_type):
             "LogReg": LogisticRegression(max_iter=5000),
             "SVM": SVC(),
             "RF": RandomForestClassifier(), 
+            "XGB": XGBClassifier(use_label_encoder=False, eval_metric="logloss", random_state=42),
+            "LGBM": LGBMClassifier(random_state=42),
+            "CatBoost": CatBoostClassifier(verbose=0, random_state=42),
         }
 
         grid_params = {
             "LogReg": {"C": [0.1, 1, 10]},
             "SVM": {"C": [0.1, 1, 10], "kernel": ["linear", "rbf"]},
-            "RF": {"n_estimators": [100, 200], "max_depth": [None, 10]}
+            "RF": {"n_estimators": [100, 200], "max_depth": [None, 10]},
+            "XGB": {"max_depth": [3, 5, 7],"learning_rate": [0.01, 0.05, 0.1], "n_estimators": [100, 300], "subsample": [0.7, 0.9, 1], "colsample_bytree": [0.7, 0.9, 1]},
+            "LGBM": {"num_leaves": [31, 50, 100], "learning_rate": [0.01, 0.05, 0.1], "n_estimators": [100, 300], "subsample": [0.7, 0.9, 1], "colsample_bytree": [0.7, 0.9, 1]},
+            "CatBoost": {"depth": [4, 6, 8  ], "learning_rate": [0.01, 0.05, 0.1], "n_estimators": [200, 500], "l2_leaf_reg": [1, 3, 5]}
         }
 
     if task_type == "Regression":
@@ -43,12 +53,18 @@ def train_model(df, target, task_type):
             "LinReg": LinearRegression(),
             "SVR": SVR(),
             "RF": RandomForestRegressor(),
+            "XGB": XGBRegressor(random_state=42),
+            "LGBM": LGBMRegressor(random_state=42),
+            "CatBoost": CatBoostRegressor(verbose=0, random_state=42),
         }
 
         grid_params = {
             "LinReg": {},
             "SVR": {"C": [0.1, 1, 10], "kernel": ["linear", "rbf"]},
             "RF": {"n_estimators": [100, 200], "max_depth": [None, 10]},
+            "XGB": {"max_depth": [3, 5, 7], "learning_rate": [0.01, 0.05, 0.1], "n_estimators": [100, 300]},
+            "LGBM": {"max_depth": [31, 50, 100], "learning_rate": [0.01, 0.05, 0.1], "n_estimators": [100, 300]},
+            "CatBoost": {"depth": [4, 6, 8], "learning_rate": [0.01, 0.05, 0.1], "n_estimators": [200, 500]},
         }
 
     for name, model in models.items():
@@ -57,10 +73,11 @@ def train_model(df, target, task_type):
         else:
             scoring = "accuracy"
 
+        # Perform Grid Search CV
         grid = GridSearchCV(model, grid_params[name], cv=5, scoring=scoring, verbose=0, error_score="raise")
         grid.fit(X_train, y_train)
 
-        best_model = grid.best_estimator_
+        best_model = grid.best_estimator_  # Get the best model from grid search
         y_pred = best_model.predict(X_test)
 
         base_metrics = {

@@ -4,15 +4,14 @@ import numpy as np
 from src.data_utils import preprocess_data
 
 def test_preprocess_data_returns_splits():
-    df = pd.DataFrame({
-        'feature1': [1, 2, 3, 4],
-        'feature2': [10, 20, 30, 40],
-        'target': [0, 1, 0, 1]
-    })
-    X_train, X_test, y_train, y_test = preprocess_data(df, 'target')
+    df = pd.read_csv("tests/Iris.csv")
+    target = 'Species'
+
+    X_train, X_test, y_train, y_test = preprocess_data(df, target)
+    
     assert len(X_train) > 0
     assert len(X_test) > 0
-    assert y_train.isin([0, 1]).all()
+    assert y_train.isin([0, 1, 2]).all()
 
 
 def test_preprocess_data_removes_nan():
