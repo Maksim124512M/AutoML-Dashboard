@@ -45,7 +45,7 @@ def train_model(df, target, task_type):
             "RF": {"n_estimators": [100, 200], "max_depth": [None, 10]},
             "XGB": {"max_depth": [3, 5, 7],"learning_rate": [0.01, 0.05, 0.1], "n_estimators": [100, 300], "subsample": [0.7, 0.9, 1], "colsample_bytree": [0.7, 0.9, 1]},
             "LGBM": {"num_leaves": [31, 50, 100], "learning_rate": [0.01, 0.05, 0.1], "n_estimators": [100, 300], "subsample": [0.7, 0.9, 1], "colsample_bytree": [0.7, 0.9, 1]},
-            "CatBoost": {"depth": [4, 6, 8  ], "learning_rate": [0.01, 0.05, 0.1], "n_estimators": [200, 500], "l2_leaf_reg": [1, 3, 5]}
+            "CatBoost": {"depth": [4, 6, 8  ], "learning_rate": [0.01, 0.05, 0.1], "iterations": [200, 500], "l2_leaf_reg": [1, 3, 5]}
         }
 
     if task_type == "Regression":
