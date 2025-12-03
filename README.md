@@ -25,25 +25,9 @@ This project allows users to upload datasets, preprocess data, train multiple ML
 - Streamlit
 - Docker
 
-## Getting Started
+## How to try
+Follow the [link](https://automl-dashboard-2hzdokvt8bg5azlsx7rpre.streamlit.app/) to get started.
 
-1. Clone the repo:
-```bash
-git clone https://github.com/your-username/ML-Dashboard.git
-```
-2. Navigate to the project directory:
-```bash
-cd ML-Dashboard
-```
-3. Build the Docker image:
-```bash
-docker build -t ml-dashboard .
-```
-4. Run the Docker container:
-```bash
-docker run -p 8501:8501 ml-dashboard
-```
-5. Open your browser and go to `http://localhost:8501` to access the dashboard.
 ## Usage
 1. Upload your dataset in CSV format.
 2. Select the target variable and task type (classification/regression).
