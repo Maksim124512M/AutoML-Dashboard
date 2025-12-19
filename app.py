@@ -1,8 +1,12 @@
 import streamlit as st
 import pandas as pd
 
+from io import BytesIO
+
 from src.model_utils import train_model
 from src.visual_utils import plot_metrics
+
+from matplotlib.backends.backend_pdf import PdfPages
 
 st.title("Machine Learning Dashboard")
 
@@ -31,6 +35,20 @@ if uploaded_file:
 
             fig = plot_metrics(df_results, task_type)
             st.pyplot(fig)
+
+            pdf_buffer = BytesIO()
+
+            with PdfPages(pdf_buffer) as pdf:
+                pdf.savefig(fig, bbox_inches="tight")
+
+            pdf_buffer.seek(0)
+
+            st.download_button(
+                label="Download PDF report",
+                data=pdf_buffer,
+                file_name="ML_report.pdf",
+                mime="application/pdf",
+            )
         except ValueError as e:
             st.warning(e)
         except Exception as e:

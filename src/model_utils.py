@@ -74,7 +74,7 @@ def train_model(df, target, task_type):
             scoring = "accuracy"
 
         # Perform Grid Search CV
-        grid = GridSearchCV(model, grid_params[name], cv=5, scoring=scoring, verbose=0, error_score="raise")
+        grid = GridSearchCV(model, grid_params[name], cv=5, scoring=scoring, verbose=0, error_score="raise", n_jobs=-1)
         grid.fit(X_train, y_train)
 
         best_model = grid.best_estimator_  # Get the best model from grid search
